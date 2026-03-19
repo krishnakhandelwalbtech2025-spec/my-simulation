@@ -1,0 +1,27 @@
+import traci
+import time
+
+# This tells the script which simulation file to open
+sumoCmd = ["sumo-gui", "-c", "osm.sumocfg"]
+
+# Start the simulation
+print("Starting SUMO...")
+traci.start(sumoCmd)
+
+step = 0
+while step < 1000:
+    # Advance the simulation by one step
+    traci.simulationStep()
+
+    # Count vehicles currently on the map
+    # "vehicles" is a list of IDs of all cars currently driving
+    vehicles = traci.vehicle.getIDList()
+    count = len(vehicles)
+
+    if step % 50 == 0:
+        print(f"Step {step}: {count} vehicles are driving.")
+
+    step += 1
+    time.sleep(0.05) # Slow down slightly so you can see it happen
+
+traci.close()
